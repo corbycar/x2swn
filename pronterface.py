@@ -1514,10 +1514,10 @@ class PronterWindow(wx.Frame,pronsole.pronsole):
     def loadfile(self,event,filename=None):
         # If printing or pused
         if self.paused or self.p.printing or self.sdprinting:
-            dlg=wx.MessageDialog(self, _("You have to cancel the ongoing print to load the new file?"), _("Cancel?"), wx.YES|wx.NO)
-            if dlg.ShowModal()==wx.ID_YES:
-                cancelprint()
+            dlg=wx.MessageDialog(self, _("Would you like to cancel the ongoing print to load the new file?"), _("Cancel?"), wx.YES|wx.NO)
+            if dlg.ShowModal()==wx.ID_NO:
                 return
+            self.cancelprint()
         if self.skeining and self.skeinp is not None:
             self.skeinp.terminate()
             return
@@ -1584,7 +1584,7 @@ class PronterWindow(wx.Frame,pronsole.pronsole):
             dlg=wx.MessageDialog(self, _("Are you sure you want to cancel the print?"), _("Cancel?"), wx.YES|wx.NO)
             if dlg.ShowModal()==wx.ID_NO:
                 return
-            cancelprint()
+            self.cancelprint()
             return
         # Start new print
         self.sdprinting = 0
@@ -1660,7 +1660,7 @@ class PronterWindow(wx.Frame,pronsole.pronsole):
             dlg=wx.MessageDialog(self, _("Are you sure you want to cancel the print?"), _("Cancel?"), wx.YES|wx.NO)
             if dlg.ShowModal()==wx.ID_NO:
                 return
-            cancelprint()
+            self.cancelprint()
             return
         self.on_startprint()
         threading.Thread(target=self.getfiles).start()
